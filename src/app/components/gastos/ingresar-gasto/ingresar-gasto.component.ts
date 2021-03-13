@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PresupuestoService } from 'src/app/service/presupuesto.service';
 
 @Component({
   selector: 'app-ingresar-gasto',
@@ -12,17 +13,37 @@ export class IngresarGastoComponent implements OnInit {
   formularioIncorrecto: boolean;
    textIncorrecto: string;
 
-  constructor() {
+  constructor(private _presupuestoService : PresupuestoService) {
     this.nombreGasto = '',
     this.cantidad = 0;
     this.formularioIncorrecto= false;
-    this.textIncorrecto = 'Nombre gasto o cantidad incorrecta'
+    this.textIncorrecto = 'Nombre de gasto o cantidad incorrecta'
    }
 
   ngOnInit(): void {
   }
 
   agregarGasto(){
+
+  if(this.cantidad > this._presupuestoService.restante){
+
+    this.formularioIncorrecto = true;
+
+    this.textIncorrecto = "Cantidad Ingresada es mayor al restante"
+
+    return;
+  }
+   else {
+
+    const GASTO = {
+      nombre: this.nombreGasto,
+      cantidad: this.cantidad
+    }
+
+
+    this._presupuestoService.agregarGasto(GASTO)
+
+
     if(this.nombreGasto === ''  || this.cantidad <= 0){
       this.formularioIncorrecto = true
 
@@ -34,5 +55,7 @@ export class IngresarGastoComponent implements OnInit {
       this.cantidad = 0;
     }
   }
+
+  } 
 
 }
