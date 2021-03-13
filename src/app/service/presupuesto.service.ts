@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ export class PresupuestoService {
 
   presupuesto: number;
   restante: number;
+  private gastos$ = new Subject<any>();
 
 
   constructor() { 
@@ -16,5 +18,11 @@ export class PresupuestoService {
 
   agregarGasto(gasto: any){
 this.restante = this.restante - gasto.cantidad
+this.gastos$.next(gasto)
+  }
+
+  getGastos(): Observable<any> {
+    return this.gastos$.asObservable();
+
   }
 }
