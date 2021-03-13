@@ -12,3 +12,7 @@ font-family: 'Luckiest Guy', cursive;
     color: white;
     text-transform: uppercase;
 }
+
+.textError{
+    font-size: 1rem;
+}
